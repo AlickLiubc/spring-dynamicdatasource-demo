@@ -11,4 +11,12 @@
         VALUES(#{name}, #{age})
     </insert>
 
+    <insert id="batchInsertStudent">
+        INSERT INTO student(name ,age)
+        VALUES
+        <foreach collection="itemList" item="item" separator=",">
+            (#{item.name}, #{item.age})
+        </foreach>
+    </insert>
+
 </mapper>
