@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/test")
 public class TestController {
@@ -39,5 +43,31 @@ public class TestController {
 
         return "success";
     }
+
+    @RequestMapping("/batch_add")
+    public String batchAdd() {
+        List<Student> itemList = new ArrayList<>();
+        for (int i = 0; i < 20000; i++) {
+            Student addStu = new Student();
+            addStu.setName(UUID.randomUUID().toString());
+            addStu.setAge(19);
+            itemList.add(addStu);
+        }
+        // System.out.println(itemList);
+
+        long startTimeMillis = System.currentTimeMillis();
+        // 程序耗时为：3ms
+        studentService.batchAddStudent(itemList);
+
+        // 程序耗时为：1293ms
+        // studentService.batchAddStudent2(itemList);
+        long endTimeMillis = System.currentTimeMillis();
+        long totalTimeMillis = endTimeMillis - startTimeMillis;
+
+        System.out.println("程序耗时为：" + totalTimeMillis + "ms");
+
+        return "success";
+    }
+
 
 }
